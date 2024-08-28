@@ -1,6 +1,6 @@
-const { PrismaClient } = require("@prisma/client");
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
+import { PrismaClient } from "@prisma/client";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
 dotenv.config();
 const jwtSecret = process.env.SECRET_KEY;
@@ -66,6 +66,4 @@ const checkAuth = async (req, res, next) => {
   next();
 };
 
-module.exports = {
-  checkAuth,
-};
+export { checkAuth };

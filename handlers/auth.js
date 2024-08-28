@@ -1,9 +1,9 @@
-const { PrismaClient } = require("@prisma/client");
-const { validateEmail, validatePassword } = require("../utils/validators");
-const bcrypt = require("bcrypt");
-const sendEmail = require("../utils/email");
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
+import { PrismaClient } from "@prisma/client";
+import { validateEmail, validatePassword } from "../utils/validators.js";
+import bcrypt from "bcrypt";
+import sendEmail from "../utils/email.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
 dotenv.config();
 const jwtSecret = process.env.SECRET_KEY;
@@ -63,7 +63,7 @@ const registerHandler = async (req, res) => {
     "Verify",
     `<h1>Please verify</h1>
 Please verify your account on API Gateway by clicking on this <a href="${url}">link</a>.
-Alternatively, you can visit this URL: ${url}`,
+Alternatively, you can visit this URL: ${url}`
   );
   res.json({
     success: true,
@@ -98,7 +98,7 @@ const verifyHandler = async (req, res) => {
   res.send(
     `Your account has been verified succesfully. Click <a href="${
       req.protocol
-    }://${req.get("host")}/">here</a> to go to API Gateway`,
+    }://${req.get("host")}/">here</a> to go to API Gateway`
   );
 };
 
@@ -157,9 +157,4 @@ const userDataHandler = (req, res) => {
   });
 };
 
-module.exports = {
-  registerHandler,
-  verifyHandler,
-  loginHandler,
-  userDataHandler,
-};
+export { registerHandler, verifyHandler, loginHandler, userDataHandler };

@@ -1,14 +1,15 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+import authRouter from "./router/auth.js";
+
 const app = express();
-const cors = require("cors");
-const authRouter = require("./router/auth.js");
 
 app.use(express.json());
 app.use(
   cors({
     origin: true,
     credentials: true,
-  }),
+  })
 );
 
 app.use("/auth", authRouter);
