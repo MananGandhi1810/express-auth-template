@@ -63,7 +63,7 @@ const registerHandler = async (req, res) => {
     "Verify",
     `<h1>Please verify</h1>
 Please verify your account on API Gateway by clicking on this <a href="${url}">link</a>.
-Alternatively, you can visit this URL: ${url}`
+Alternatively, you can visit this URL: ${url}`,
   );
   res.json({
     success: true,
@@ -98,7 +98,7 @@ const verifyHandler = async (req, res) => {
   res.send(
     `Your account has been verified succesfully. Click <a href="${
       req.protocol
-    }://${req.get("host")}/">here</a> to go to API Gateway`
+    }://${req.get("host")}/">here</a> to go to API Gateway`,
   );
 };
 
