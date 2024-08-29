@@ -3,6 +3,7 @@ import {
   registerHandler,
   verifyHandler,
   loginHandler,
+  resendVerificationHandler,
   userDataHandler,
 } from "../handlers/auth.js";
 
@@ -13,6 +14,7 @@ var router = Router();
 router.post("/register", registerHandler);
 router.get("/verify", verifyHandler);
 router.post("/login", loginHandler);
+router.post("/resend-verification", resendVerificationHandler);
 router.get("/user", checkAuth, userDataHandler);
 
 export default router;
