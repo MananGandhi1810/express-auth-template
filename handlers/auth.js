@@ -61,13 +61,13 @@ const registerHandler = async (req, res) => {
     email,
     "Verify",
     `<h1>Please verify</h1>
-Please verify your account on API Gateway by clicking on this <a href="${url}">link</a>.
-Alternatively, you can visit this URL: ${url}`,
+Please verify your account on {APP_NAME} by clicking on this <a href="${url}">link</a>.
+Alternatively, you can visit this URL: ${url}`
   );
   res.json({
     success: true,
     message:
-      "Registered succesfully, please check your email inbox for verification",
+      "Registered successfully, please check your email inbox for verification",
     data: user,
   });
 };
@@ -95,9 +95,9 @@ const verifyHandler = async (req, res) => {
     res.status(500).send("There was an error in verifying your account");
   }
   res.send(
-    `Your account has been verified succesfully. Click <a href="${
+    `Your account has been verified successfully. Click <a href="${
       req.protocol
-    }://${req.get("host")}/">here</a> to go to API Gateway`,
+    }://${req.get("host")}/">here</a> to go to {APP_NAME}`
   );
 };
 
@@ -141,11 +141,57 @@ const loginHandler = async (req, res) => {
   const token = jwt.sign({ email, name: user.name, id: user.id }, jwtSecret);
   res.json({
     success: true,
-    message: "Logged in succesfully",
+    message: "Logged in successfully",
     data: {
       token,
       user,
     },
+  });
+};
+
+const resendVerificationHandler = async (req, res) => {
+  const { email } = req.body;
+  if (!validateEmail(email)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid email format",
+      data: null,
+    });
+  }
+  var user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+  if (!user) {
+    return res.status(403).json({
+      success: false,
+      message: "This email does not exist",
+      data: null,
+    });
+  }
+  if (user.isVerified) {
+    return res.status(403).json({
+      success: false,
+      message: "This user is already verified",
+      data: null,
+    });
+  }
+
+  const token = jwt.sign({ email, name: user.name, id: user.id }, jwtSecret);
+
+  const url = `${req.protocol}://${req.get("host")}/auth/verify?token=${token}`;
+  await sendEmail(
+    email,
+    "Verify",
+    `<h1>Please verify</h1>
+Please verify your account on {APP_NAME} by clicking on this <a href="${url}">link</a>.
+Alternatively, you can visit this URL: ${url}`
+  );
+  res.json({
+    success: true,
+    message: "Verification email sent successfully",
+    data: user,
   });
 };
 
@@ -157,4 +203,10 @@ const userDataHandler = (req, res) => {
   });
 };
 
-export { registerHandler, verifyHandler, loginHandler, userDataHandler };
+export {
+  registerHandler,
+  verifyHandler,
+  loginHandler,
+  userDataHandler,
+  resendVerificationHandler,
+};
