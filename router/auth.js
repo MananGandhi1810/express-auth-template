@@ -4,6 +4,9 @@ import {
   verifyHandler,
   loginHandler,
   resendVerificationHandler,
+  forgotPasswordHandler,
+  resetPasswordHandler,
+  verifyOtpHandler,
   userDataHandler,
 } from "../handlers/auth.js";
 
@@ -15,9 +18,9 @@ router.post("/register", registerHandler);
 router.get("/verify", verifyHandler);
 router.post("/login", loginHandler);
 router.post("/resend-verification", resendVerificationHandler);
-router.post("/forgot-password", ()=>{});
-router.post("/verify-otp", ()=>{});
-router.post("/reset-password", ()=>{});
+router.post("/forgot-password", forgotPasswordHandler);
+router.post("/verify-otp", verifyOtpHandler);
+router.post("/reset-password", resetPasswordHandler);
 router.get("/user", checkAuth, userDataHandler);
 
 export default router;

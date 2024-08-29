@@ -1,11 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { createClient } from "redis";
 
 dotenv.config();
 const jwtSecret = process.env.SECRET_KEY;
 
 const prisma = new PrismaClient();
+const redis = createClient({ url: process.env.REDIS_URL });
+redis.connect();
 
 const checkAuth = async (req, res, next) => {
   const { authorization } = req.headers;
@@ -58,6 +61,25 @@ const checkAuth = async (req, res, next) => {
     return res.status(403).json({
       success: false,
       message: "Please verify your account to continue",
+      data: null,
+    });
+  }
+  if (jwtUser.iat <= user.passwordUpdatedAt.getTime() / 1000) {
+    return res.status(403).json({
+      success: false,
+      message: "Please login again after password update",
+      data: null,
+    });
+  }
+  const otpRedisId = `password-otp:${user.email}`;
+  const passwordChangeRedisId = `allow-password-change:${user.email}`;
+  const resetReqExists =
+    (await redis.exists(otpRedisId)) ||
+    (await redis.exists(passwordChangeRedisId));
+  if (resetReqExists) {
+    return res.status(403).json({
+      success: false,
+      message: "A password reset for this account has been requested",
       data: null,
     });
   }
