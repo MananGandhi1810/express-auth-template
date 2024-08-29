@@ -1,8 +1,8 @@
 import argon2 from "argon2";
 
 const hash = async (str) => {
-  const hashedPassword = await argon2.hash(str);
-  return hashedPassword;
+  const hashedStr = await argon2.hash(str);
+  return hashedStr;
 };
 
 const compare = async (actualStr, expectedStr) => {
