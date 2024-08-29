@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { validateEmail, validatePassword } from "../utils/validators.js";
-import bcrypt from "bcrypt";
+import { hash, compare } from "../utils/hashing.js";
 import sendEmail from "../utils/email.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -8,7 +8,6 @@ import dotenv from "dotenv";
 dotenv.config();
 const jwtSecret = process.env.SECRET_KEY;
 
-const saltRounds = 10;
 const prisma = new PrismaClient();
 
 const registerHandler = async (req, res) => {
@@ -50,7 +49,7 @@ const registerHandler = async (req, res) => {
       data: null,
     });
   }
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  const hashedPassword = await hash(password);
   var user = await prisma.user.create({
     data: { name, email, password: hashedPassword },
   });
@@ -63,7 +62,7 @@ const registerHandler = async (req, res) => {
     "Verify",
     `<h1>Please verify</h1>
 Please verify your account on API Gateway by clicking on this <a href="${url}">link</a>.
-Alternatively, you can visit this URL: ${url}`
+Alternatively, you can visit this URL: ${url}`,
   );
   res.json({
     success: true,
@@ -98,7 +97,7 @@ const verifyHandler = async (req, res) => {
   res.send(
     `Your account has been verified succesfully. Click <a href="${
       req.protocol
-    }://${req.get("host")}/">here</a> to go to API Gateway`
+    }://${req.get("host")}/">here</a> to go to API Gateway`,
   );
 };
 
@@ -123,7 +122,8 @@ const loginHandler = async (req, res) => {
       data: null,
     });
   }
-  if (!bcrypt.compareSync(password, user.password)) {
+  const passwordMatch = await compare(password, user.password);
+  if (!passwordMatch) {
     return res.status(403).json({
       success: false,
       message: "Invalid password",
