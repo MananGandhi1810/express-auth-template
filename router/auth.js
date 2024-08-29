@@ -15,6 +15,9 @@ router.post("/register", registerHandler);
 router.get("/verify", verifyHandler);
 router.post("/login", loginHandler);
 router.post("/resend-verification", resendVerificationHandler);
+router.post("/forgot-password", ()=>{});
+router.post("/verify-otp", ()=>{});
+router.post("/reset-password", ()=>{});
 router.get("/user", checkAuth, userDataHandler);
 
 export default router;
