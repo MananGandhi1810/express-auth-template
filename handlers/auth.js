@@ -65,7 +65,7 @@ const registerHandler = async (req, res) => {
     "Verify",
     `<h1>Please verify</h1>
 Please verify your account on {APP_NAME} by clicking on this <a href="${url}">link</a>.
-Alternatively, you can visit this URL: ${url}`
+Alternatively, you can visit this URL: ${url}`,
   );
   res.json({
     success: true,
@@ -100,7 +100,7 @@ const verifyHandler = async (req, res) => {
   res.send(
     `Your account has been verified successfully. Click <a href="${
       req.protocol
-    }://${req.get("host")}/">here</a> to go to {APP_NAME}`
+    }://${req.get("host")}/">here</a> to go to {APP_NAME}`,
   );
 };
 
@@ -201,7 +201,7 @@ const resendVerificationHandler = async (req, res) => {
     "Verify",
     `<h1>Please verify</h1>
 Please verify your account on {APP_NAME} by clicking on this <a href="${url}">link</a>.
-Alternatively, you can visit this URL: ${url}`
+Alternatively, you can visit this URL: ${url}`,
   );
   res.json({
     success: true,
@@ -244,7 +244,7 @@ const forgotPasswordHandler = async (req, res) => {
     `Password reset for ${req.get("host")}`,
     `<h1>Your OTP</h1>
 Your OTP for resetting the password is ${otp}. Do not share this with anyone.
-OTP expires in 5 minutes.`
+OTP expires in 5 minutes.`,
   );
   await redis.set(`password-otp:${email}`, otp, { EX: 60 * 5 });
   res.status(200).json({
@@ -300,7 +300,7 @@ const verifyOtpHandler = async (req, res) => {
       name: user.name,
       id: user.id,
     },
-    jwtSecret
+    jwtSecret,
   );
   res.status(200).json({
     success: true,
