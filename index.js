@@ -12,7 +12,7 @@ app.use(
     origin: true,
     credentials: true,
   }),
-);  
+);
 
 app.use("/auth", authRouter);
 
