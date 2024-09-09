@@ -1,13 +1,13 @@
 import { Router } from "express";
 import {
-  registerHandler,
-  verifyHandler,
-  loginHandler,
-  resendVerificationHandler,
-  forgotPasswordHandler,
-  resetPasswordHandler,
-  verifyOtpHandler,
-  userDataHandler,
+    registerHandler,
+    verifyHandler,
+    loginHandler,
+    resendVerificationHandler,
+    forgotPasswordHandler,
+    resetPasswordHandler,
+    verifyOtpHandler,
+    userDataHandler,
 } from "../handlers/auth.js";
 
 import { checkAuth } from "../middlewares/auth.js";
