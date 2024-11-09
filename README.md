@@ -36,7 +36,7 @@ This is a simple Express app which uses JWT based authentication.
 4. Run the following command to run the Docker container
 
 ```bash
-docker run --env-file .env.prod --name <container name> -d --network=<network name> -p 3000:3000 express-auth-app
+docker run --env-file .env.prod --name <container name> -d --network=<network name> -p 3000:3000 express-app
 ```
 
 ## Contributing
