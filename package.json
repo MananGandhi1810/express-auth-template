@@ -30,6 +30,6 @@
         "nodemon": "^3.1.4",
         "prettier": "^3.3.3",
         "supertest": "^7.0.0",
-        "vitest": "^2.0.5"
+        "vitest": "^3.1.3"
     }
 }
