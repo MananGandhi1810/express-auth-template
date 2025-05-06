@@ -104,8 +104,7 @@ const verifyHandler = async (req, res) => {
             .send("There was an error in verifying your account");
     }
     res.send(
-        `Your account has been verified successfully. Click <a href="${
-            req.protocol
+        `Your account has been verified successfully. Click <a href="${req.protocol
         }://${req.get("host")}/">here</a> to go to {APP_NAME}`,
     );
 };
@@ -159,7 +158,7 @@ const loginHandler = async (req, res) => {
         });
     }
     user.password = undefined;
-    const token = jwt.sign({ email, name: user.name, id: user.id }, jwtSecret);
+    const token = jwt.sign({ id: user.id }, jwtSecret);
     res.json({
         success: true,
         message: "Logged in successfully",
