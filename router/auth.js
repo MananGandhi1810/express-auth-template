@@ -11,13 +11,14 @@ import {
 } from "../handlers/auth.js";
 
 import { checkAuth } from "../middlewares/auth.js";
+import { rateLimit } from "../middlewares/rate-limit.js";
 
 var router = Router();
 
-router.post("/register", registerHandler);
+router.post("/register", (req, res, next) => rateLimit(req, res, next, 6, "register"), registerHandler);
 router.get("/verify", verifyHandler);
-router.post("/login", loginHandler);
-router.post("/resend-verification", resendVerificationHandler);
+router.post("/login", (req, res, next) => rateLimit(req, res, next, 6, "login"), loginHandler);
+router.post("/resend-verification", (req, res, next) => rateLimit(req, res, next, 2, "resend-verification"), resendVerificationHandler);
 router.post("/forgot-password", forgotPasswordHandler);
 router.post("/verify-otp", verifyOtpHandler);
 router.post("/reset-password", resetPasswordHandler);
